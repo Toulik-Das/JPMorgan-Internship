@@ -1,0 +1,72 @@
+From c1f05a0ee08777d60f285e4bec5fd72c571cb0dc Mon Sep 17 00:00:00 2001
+From: Toulik Das <dastoulik12@gmail.com>
+Date: Fri, 24 Apr 2020 14:03:28 +0530
+Subject: [PATCH] 'Task2'
+
+---
+ src/App.tsx   | 10 +++++-----
+ src/Graph.tsx |  5 +++++
+ 2 files changed, 10 insertions(+), 5 deletions(-)
+
+diff --git a/src/App.tsx b/src/App.tsx
+index 0728518..0771a3e 100755
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -8,6 +8,7 @@ import './App.css';
+  */
+ interface IState {
+   data: ServerRespond[],
++  showGraph: boolean,
+ }
+ 
+ /**
+@@ -22,6 +23,7 @@ class App extends Component<{}, IState> {
+       // data saves the server responds.
+       // We use this state to parse data down to the child element (Graph) as element property
+       data: [],
++      showGraph: false,
+     };
+   }
+ 
+@@ -29,7 +31,9 @@ class App extends Component<{}, IState> {
+    * Render Graph react component with state.data parse as property data
+    */
+   renderGraph() {
++   if(this.state.showGraph){
+     return (<Graph data={this.state.data}/>)
++   }
+   }
+ 
+   /**
+@@ -54,11 +58,7 @@ class App extends Component<{}, IState> {
+         </header>
+         <div className="App-content">
+           <button className="btn btn-primary Stream-button"
+-            // when button is click, our react app tries to request
+-            // new data from the server.
+-            // As part of your task, update the getDataFromServer() function
+-            // to keep requesting the data every 100ms until the app is closed
+-            // or the server does not return anymore data.
++            
+             onClick={() => {this.getDataFromServer()}}>
+             Start Streaming Data
+           </button>
+diff --git a/src/Graph.tsx b/src/Graph.tsx
+index ec1430e..da00f4d 100644
+--- a/src/Graph.tsx
++++ b/src/Graph.tsx
+@@ -49,6 +49,11 @@ class Graph extends Component<IProps, {}> {
+ 
+       // Add more Perspective configurations here.
+       elem.load(this.table);
++      elem.setAttribute('view','y_line');
++      elem.setAttribute('coloum-pivots','["stock"]');
++      elem.setAttribute('row-pivots','["timestamp"]');
++      elem.setAttribute('coloumms','["top_ask_price"]');
++      elem.setAttribute('aggregates',`{"stock":"distinct count","top_ask_price":"avg","top_bid_price":"avg","timestamp":"distinct count"}`);
+     }
+   }
+ 
+-- 
+2.18.0.windows.1
+
